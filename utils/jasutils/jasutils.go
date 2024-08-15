@@ -31,6 +31,7 @@ const (
 	ApplicabilityUndetermined ApplicabilityStatus = "Undetermined"
 	NotCovered                ApplicabilityStatus = "Not Covered"
 	NotScanned                ApplicabilityStatus = ""
+	TechnologyUnsupported     ApplicabilityStatus = "Technology Unsupported"
 )
 
 func (as ApplicabilityStatus) String() string {
@@ -61,6 +62,8 @@ func ConvertToApplicabilityStatus(status string) ApplicabilityStatus {
 		return ApplicabilityUndetermined
 	case NotCovered.String():
 		return NotCovered
+	case TechnologyUnsupported.String():
+		return TechnologyUnsupported
 	default:
 		return NotScanned
 	}
@@ -75,11 +78,12 @@ func ApplicabilityRuleIdToCve(sarifRuleId string) string {
 }
 
 var applicableMapToScore = map[string]int{
-	"Applicable":                4,
-	"ApplicabilityUndetermined": 3,
-	"NotScanned":                2,
-	"NotCovered":                1,
-	"NotApplicable":             0,
+	"Applicable":                5,
+	"ApplicabilityUndetermined": 4,
+	"NotScanned":                3,
+	"NotCovered":                2,
+	"NotApplicable":             1,
+	"TechnologyUnsupported":     0,
 }
 
 func ConvertApplicableToScore(applicability string) int {

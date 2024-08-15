@@ -231,6 +231,7 @@ func prepareVulnerabilities(vulnerabilities []services.Vulnerability, results *R
 				cves[i].Applicability = getCveApplicabilityField(cves[i].Id, results.ExtendedScanResults.ApplicabilityScanResults, vulnerability.Components)
 			}
 		}
+		if vulnerability.Technology
 		applicabilityStatus := getApplicableCveStatus(results.ExtendedScanResults.EntitledForJas, results.ExtendedScanResults.ApplicabilityScanResults, cves)
 		currSeverity, err := severityutils.ParseSeverity(vulnerability.Severity, false)
 		if err != nil {
