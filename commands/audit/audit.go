@@ -3,6 +3,7 @@ package audit
 import (
 	"errors"
 	"fmt"
+	"github.com/jfrog/jfrog-cli-security/jas/maliciouscode"
 	"strings"
 
 	"github.com/jfrog/gofrog/parallel"
@@ -336,6 +337,7 @@ func createJasScansTasks(auditParallelRunner *utils.SecurityParallelRunner, scan
 				ConfigProfile:               auditParams.configProfile,
 				ScansToPerform:              auditParams.ScansToPerform(),
 				SecretsScanType:             secrets.SecretsScannerType,
+				MaliciousScanType:           maliciouscode.MaliciousScannerType,
 				DirectDependencies:          auditParams.DirectDependencies(),
 				ThirdPartyApplicabilityScan: auditParams.thirdPartyApplicabilityScan,
 				ApplicableScanType:          applicability.ApplicabilityScannerType,

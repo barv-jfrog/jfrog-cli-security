@@ -20,6 +20,7 @@ const (
 	Secrets       JasScanType = "Secrets"
 	IaC           JasScanType = "IaC"
 	Sast          JasScanType = "Sast"
+	MaliciousCode JasScanType = "MaliciousCode"
 )
 
 const (
@@ -96,6 +97,8 @@ func SubScanTypeToJasScanType(subScanType utils.SubScanType) JasScanType {
 		return Secrets
 	case utils.ContextualAnalysisScan:
 		return Applicability
+	case utils.MaliciousCodeScan:
+		return MaliciousCode
 	}
 	return ""
 }

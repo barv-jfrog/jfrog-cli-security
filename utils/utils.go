@@ -48,6 +48,7 @@ const (
 	IacScan                      SubScanType        = "iac"
 	SastScan                     SubScanType        = "sast"
 	SecretsScan                  SubScanType        = "secrets"
+	MaliciousCodeScan            SubScanType        = "malicious_code"
 	SecretTokenValidationScan    SubScanType        = "secrets_token_validation"
 	ViolationTypeSecurity        ViolationIssueType = "security"
 	ViolationTypeLicense         ViolationIssueType = "license"
