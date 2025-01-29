@@ -40,7 +40,7 @@ func (jst JasScanType) String() string {
 }
 
 func GetJasScanTypes() []JasScanType {
-	return []JasScanType{Applicability, Secrets, IaC, Sast}
+	return []JasScanType{Applicability, Secrets, IaC, Sast, MaliciousCode}
 }
 
 func (tvs TokenValidationStatus) String() string { return string(tvs) }

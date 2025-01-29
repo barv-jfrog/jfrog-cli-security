@@ -1,7 +1,6 @@
 package maliciouscode
 
 import (
-	"github.com/jfrog/jfrog-cli-security/jas/external_files"
 	clientutils "github.com/jfrog/jfrog-client-go/utils"
 	"path/filepath"
 
@@ -98,9 +97,5 @@ func (m *MaliciousScanManager) createConfigFile(module jfrogappsconfig.Module, e
 }
 
 func (m *MaliciousScanManager) runAnalyzerManager() error {
-	external_files.SwapAnalyzerManager()
-	external_files.SwapScanners("ca_scanner", "applicability_scanner")
-	external_files.SwapScanners("secrets_scanner", "secrets_scanner")
-	external_files.SwapScanners("jas_scanner", "jas_scanner")
 	return m.scanner.AnalyzerManager.Exec(m.configFileName, maliciousScanCommand, filepath.Dir(m.scanner.AnalyzerManager.AnalyzerManagerFullPath), m.scanner.ServerDetails, m.scanner.EnvVars)
 }

@@ -157,6 +157,25 @@ func (sjc *CmdResultsSimpleJsonConverter) ParseSecrets(_ results.ScanTarget, isV
 	return
 }
 
+func (sjc *CmdResultsSimpleJsonConverter) ParseMalicious(_ results.ScanTarget, isViolationsResults bool, maliciousFindings []results.ScanResult[[]*sarif.Run]) (err error) {
+	if !sjc.entitledForJas {
+		return
+	}
+	if sjc.current == nil {
+		return results.ErrResetConvertor
+	}
+	maliciousSimpleJson, err := PrepareSimpleJsonJasIssues(sjc.entitledForJas, sjc.pretty, results.ScanResultsToRuns(maliciousFindings)...)
+	if err != nil || len(maliciousSimpleJson) == 0 {
+		return
+	}
+	if isViolationsResults {
+		sjc.current.MaliciousViolations = append(sjc.current.MaliciousViolations, maliciousSimpleJson...)
+	} else {
+		sjc.current.MaliciousVulnerabilities = append(sjc.current.MaliciousVulnerabilities, maliciousSimpleJson...)
+	}
+	return
+}
+
 func (sjc *CmdResultsSimpleJsonConverter) ParseIacs(_ results.ScanTarget, isViolationsResults bool, iacs []results.ScanResult[[]*sarif.Run]) (err error) {
 	if !sjc.entitledForJas {
 		return
