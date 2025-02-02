@@ -189,25 +189,33 @@ func (auditCmd *AuditCommand) Run() (err error) {
 			return errors.Join(err, auditResults.GetErrors())
 		}
 	}
+
+	return ProcessResultsAndOutput(auditResults, auditCmd.getResultWriter(auditResults), auditCmd.Fail)
+}
+
+func (auditCmd *AuditCommand) getResultWriter(cmdResults *results.SecurityCommandResults) *output.ResultsWriter {
 	var messages []string
-	if !auditResults.EntitledForJas {
+	if !cmdResults.EntitledForJas {
 		messages = []string{coreutils.PrintTitle("The ‘jf audit’ command also supports JFrog Advanced Security features, such as 'Contextual Analysis', 'Secret Detection', 'Malicious Code Scan', 'IaC Scan' and ‘SAST’.\nThis feature isn't enabled on your system. Read more - ") + coreutils.PrintLink(utils.JasInfoURL)}
 	}
-	if err = output.NewResultsWriter(auditResults).
+	return output.NewResultsWriter(cmdResults).
 		SetOutputFormat(auditCmd.OutputFormat()).
 		SetPrintExtendedTable(auditCmd.PrintExtendedTable).
 		SetExtraMessages(messages).
-		SetSubScansPerformed(auditCmd.ScansToPerform()).
-		PrintScanResults(); err != nil {
-		return errors.Join(err, auditResults.GetErrors())
-	}
+		SetSubScansPerformed(auditCmd.ScansToPerform())
+}
 
-	if err = auditResults.GetErrors(); err != nil {
+func ProcessResultsAndOutput(cmdResults *results.SecurityCommandResults, outputWriter *output.ResultsWriter, failBuild bool) (err error) {
+	if err = outputWriter.PrintScanResults(); err != nil {
+		// Error printing the results, return the error and the scan results errors.
+		return errors.Join(err, cmdResults.GetErrors())
+	}
+	if err = cmdResults.GetErrors(); err != nil {
+		// Return the scan results errors.
 		return
 	}
-
 	// Only in case Xray's context was given (!auditCmd.IncludeVulnerabilities), and the user asked to fail the build accordingly, do so.
-	if auditCmd.Fail && !auditCmd.IncludeVulnerabilities && results.CheckIfFailBuild(auditResults.GetScaScansXrayResults()) {
+	if failBuild && !cmdResults.ResultContext.IncludeVulnerabilities && results.CheckIfFailBuild(cmdResults.GetScaScansXrayResults()) {
 		err = results.NewFailBuildError()
 	}
 	return
