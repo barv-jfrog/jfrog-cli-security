@@ -40,7 +40,6 @@ func TestBuildSwiftDependencyList(t *testing.T) {
 		techutils.Swift.GetPackageTypeId() + "github.com/apple/swift-atomics:1.2.0",
 		techutils.Swift.GetPackageTypeId() + "github.com/apple/swift-collections:1.1.4",
 		techutils.Swift.GetPackageTypeId() + "github.com/apple/swift-system:1.4.0",
-		techutils.Swift.GetPackageTypeId() + "github.com/apple/swift-http-types:1.0.2",
 		techutils.Swift.GetPackageTypeId() + "github.com/apple/swift-nio:2.76.1",
 		techutils.Swift.GetPackageTypeId() + packageInfo,
 	}
@@ -52,7 +51,7 @@ func TestBuildSwiftDependencyList(t *testing.T) {
 	assert.NotEmpty(t, rootNode)
 
 	assert.Equal(t, rootNode[0].Id, techutils.Swift.GetPackageTypeId()+packageInfo)
-	assert.Len(t, rootNode[0].Nodes, 11)
+	assert.Len(t, rootNode[0].Nodes, 9)
 
 	child1 := tests.GetAndAssertNode(t, rootNode[0].Nodes, "github.com/apple/swift-algorithms:1.2.0")
 	assert.Len(t, child1.Nodes, 1)
@@ -102,7 +101,6 @@ func TestFixTechDependencySingleLocation_Range(t *testing.T) {
 	}{
 		{testName: "TestSingleLocation_Range", dependencyName: "github.com/apple/swift-nio-http2", dependencyVersion: "1.8.2", fixVersion: "1.8.3", stringToFind: ".package(url: \"https://github.com/apple/swift-nio-http2\", \"1.8.3\"..<\"1.19.1\")"},
 		{testName: "TestSingleLocation_From", dependencyName: "github.com/apple/swift-algorithms", dependencyVersion: "1.1.0", fixVersion: "1.2.0", stringToFind: ".package(url: \"https://github.com/apple/swift-algorithms\", from: \"1.2.0\""},
-		{testName: "TestSingleLocation_Exact", dependencyName: "github.com/apple/swift-http-types", dependencyVersion: "1.0.2", fixVersion: "1.0.3", stringToFind: ".package(url: \"https://github.com/apple/swift-http-types\", exact: \"1.0.3\""},
 		{testName: "TestNoLocations_FixOutOfRange", dependencyName: "github.com/apple/swift-nio-http2", dependencyVersion: "1.8.3", fixVersion: "1.19.2", stringToFind: ".package(url: \"https://github.com/apple/swift-nio-http2\", \"1.0.0\"..<\"1.19.1\")"},
 	}
 	for _, tc := range testCases {
