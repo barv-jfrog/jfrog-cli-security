@@ -125,10 +125,6 @@ jobs:
           -PassThru -Wait
         if: ${{ matrix.os == 'windows' }}
 
-      - name: Verify Installation
-        run: |
-          & 'C:\Program Files (x86)\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\devenv.exe' /log
-        if: ${{ matrix.os == 'windows' }}
 
       # Test
       - name: Run tests
