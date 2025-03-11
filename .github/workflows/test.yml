@@ -113,10 +113,6 @@ jobs:
       - name: Install and Setup Dependencies
         uses: ./.github/actions/install-and-setup
 
-      # Test
-      - name: Run tests
-        run: go test ${{ env.GO_COMMON_TEST_ARGS }} ${{ matrix.suite.testFlags }} --ci.runId=${{ runner.os }}-sec-test
-
       - name: Download Visual Studio Installer
         run: |
           Invoke-WebRequest -Uri https://aka.ms/vs/17/release/vs_enterprise.exe -OutFile vs_enterprise.exe
@@ -133,6 +129,11 @@ jobs:
         run: |
           & 'C:\Program Files (x86)\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\devenv.exe' /log
         if: ${{ matrix.os == 'windows' }}
+
+      # Test
+      - name: Run tests
+        run: go test ${{ env.GO_COMMON_TEST_ARGS }} ${{ matrix.suite.testFlags }} --ci.runId=${{ runner.os }}-sec-test
+
 
   Artifactory_Integration_Tests:
     name: "[${{ matrix.os }}] Artifactory Integration Tests"
